@@ -31,7 +31,12 @@
       "filter": ["==", ["%", ["get", "elev"], 50], 0],
       "paint": {
         "line-color": "#6B4F0A",
-        "line-width": 2
+        "line-width": [
+          "interpolate", ["linear"], ["zoom"],
+          9, 0,
+          10, 2
+        ],
+        "line-opacity": 0.5
       }
     },
     {

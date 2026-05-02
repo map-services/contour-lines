@@ -14,10 +14,12 @@ VRT        := $(TMP)/uk_dem.vrt
 GPKG       := $(TMP)/contours_uk.gpkg
 
 GEOJSON_100 := $(TMP)/contours_100m.geojson
+GEOJSON_50  := $(TMP)/contours_50m.geojson
 GEOJSON_10  := $(TMP)/contours_10m.geojson
 
-MBTILES_Z6_9  := $(TMP)/z6_7.mbtiles
-MBTILES_Z8_14 := $(TMP)/z8_14.mbtiles
+MBTILES_Z6_7   := $(TMP)/z6_7.mbtiles
+MBTILES_Z8_9   := $(TMP)/z8_9.mbtiles
+MBTILES_Z10_14 := $(TMP)/z10_14.mbtiles
 
 # ─── Final output ────────────────────────────────────────────────────────────
 
@@ -52,6 +54,10 @@ $(GEOJSON_100): $(GPKG)
 	@echo "\033[36m→ Extracting 100m contours...\033[0m"
 	ogr2ogr -f GeoJSON $@ $< -sql "SELECT * FROM contours WHERE CAST(elev AS INTEGER) % 100 = 0"
 
+$(GEOJSON_50): $(GPKG)
+	@echo "\033[36m→ Extracting 50m contours...\033[0m"
+	ogr2ogr -f GeoJSON $@ $< -sql "SELECT * FROM contours WHERE CAST(elev AS INTEGER) % 50 = 0"
+
 $(GEOJSON_10): $(GPKG)
 	@echo "\033[36m→ Extracting 10m contours...\033[0m"
 	ogr2ogr -f GeoJSON $@ $< -sql "SELECT * FROM contours WHERE CAST(elev AS INTEGER) % 10 = 0"
@@ -59,20 +65,26 @@ $(GEOJSON_10): $(GPKG)
 # ─── Step 4b: Tile each zoom band ────────────────────────────────────────────
 
 $(MBTILES_Z6_7): $(GEOJSON_100)
-	@echo "\033[36m→ Tiling z6–9...\033[0m"
+	@echo "\033[36m→ Tiling z6–7...\033[0m"
 	tippecanoe --output=$@ --layer=contours \
-	  --minimum-zoom=6 --maximum-zoom=9 \
-	  --simplification=10 --coalesce-densest-as-needed --force $<
+	  --minimum-zoom=6 --maximum-zoom=7 \
+	  --simplification=5 --coalesce-densest-as-needed --force $<
 
-$(MBTILES_Z8_14): $(GEOJSON_10)
-	@echo "\033[36m→ Tiling z12–14...\033[0m"
+$(MBTILES_Z8_9): $(GEOJSON_50)
+	@echo "\033[36m→ Tiling z8–9...\033[0m"
 	tippecanoe --output=$@ --layer=contours \
-	  --minimum-zoom=12 --maximum-zoom=14 \
+	  --minimum-zoom=8 --maximum-zoom=9 \
+	  --simplification=5 --coalesce-densest-as-needed --force $<
+
+$(MBTILES_Z10_14): $(GEOJSON_10)
+	@echo "\033[36m→ Tiling z10–14...\033[0m"
+	tippecanoe --output=$@ --layer=contours \
+	  --minimum-zoom=10 --maximum-zoom=14 \
 	  --simplification=5 --coalesce-densest-as-needed --force $<
 
 # ─── Step 5: Join zoom bands into final MBTiles ──────────────────────────────
 
-$(OUTPUT): $(MBTILES_Z6_7) $(MBTILES_Z8_14)
+$(OUTPUT): $(MBTILES_Z6_7) $(MBTILES_Z8_9) $(MBTILES_Z10_14)
 	@mkdir -p $(MBTILES)
 	@echo "\033[36m→ Joining MBTiles...\033[0m"
 	tile-join --output=$@ --force $^
