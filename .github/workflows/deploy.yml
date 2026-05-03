@@ -32,7 +32,7 @@ jobs:
           sed 's|http://localhost:8080/styles/contours/style.json|https://map-tiles.destructuring-bind.org/styles/contours/style.json|g' demo.html > _site/index.html
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: '_site'
 
