@@ -9,6 +9,9 @@ A complete pipeline for generating, serving, and visualizing high-resolution vec
 
 ![screenshot](./screenshot.webp)
 
+A map tile server is available at https://map-tiles.destructuring-bind.org/styles/contours/styles.json for light use. Please don't abuse this service: host the tiles yourself instead - re-generate them yourself using this pipeline, or
+contact me and I can supply the resultant `contours_uk.mbtiles` file.
+
 ## Features
 
 -   **High Precision**: Derived from Copernicus GLO-30 (30m resolution) digital elevation model.
