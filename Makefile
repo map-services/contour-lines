@@ -96,7 +96,7 @@ tiles: $(OUTPUT)
 serve:
 	@echo "\033[32m→ Starting TileServer GL...\033[0m"
 	docker run -p 8080:8080 -v $(shell pwd)/data:/data maptiler/tileserver-gl \
-	  --config /data/config.json --public_url=http://localhost:8080
+	  --config /data/config.json --public_url=http://localhost:8080 --log_format=combined
 
 clean:
 	@echo "\033[33m→ Cleaning workspace...\033[0m"
