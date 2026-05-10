@@ -11,8 +11,8 @@ A complete pipeline for generating, serving, and visualizing high-resolution vec
 
 A development map tile server is available the supplies two vector tile sets (generated using this pipeline):
 
-  * Contour lines (https://map-tiles.destructuring-bind.org/styles/uk_contours/style.json)
-  * UK Boundary (https://map-tiles.destructuring-bind.org/styles/uk_boundary/style.json)
+  * Contour lines (https://map-tiles.hz-nbg1.destructuring-bind.org/styles/uk_contours/style.json)
+  * UK Boundary (https://map-tiles.hz-nbg1.destructuring-bind.org/styles/uk_boundary/style.json)
 
 Please don't abuse this service: it is intended for light use only. Host the tiles yourself instead - 
 re-generate them using this pipeline, or contact me and I can supply the resultant `uk_contours.mbtiles`

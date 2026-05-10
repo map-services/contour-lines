@@ -29,7 +29,7 @@ jobs:
       - name: Prepare deployment
         run: |
           mkdir -p _site
-          sed 's|http://localhost:8080/|https://map-tiles.destructuring-bind.org/|g' demo.html > _site/index.html
+          sed 's|http://localhost:8080/|https://map-tiles.hz-nbg1.destructuring-bind.org/|g' demo.html > _site/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
